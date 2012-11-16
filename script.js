@@ -118,3 +118,22 @@ function init() {
     document.querySelector("#stop").onclick = function(){sched.stop();};
     document.querySelector("#reset").onclick = function(){sched.reset();};
 }
+
+
+
+function startMoving() {
+    var api = impress();
+    var movements = [
+        new Task(function(){api.next();}, 1000),
+        new Task(function(){api.next();}, 2000),
+        new Task(function(){api.next();}, 3000),
+        new Task(function(){api.prev();}, 4000),
+        new Task(function(){api.next();}, 5000),
+        new Task(function(){api.next();}, 6000),
+        new Task(function(){api.prev();}, 7000),
+        new Task(function(){api.next();}, 8000)
+    ];
+    
+    var sched = new Scheduler(movements, 500);
+    sched.start();
+}
