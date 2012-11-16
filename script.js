@@ -31,6 +31,7 @@ function compareTask(task1, task2) {
 }
 
 function Scheduler(tasks, resolution) {
+    //TODO: change from intervals to timeouts (when a task is over, set the time to the next one!
     this.tasks = tasks.sort(compareTask);
     this.taskIndex = 0;
     this.resolution = resolution;
@@ -168,7 +169,7 @@ function playNow() {
         console.log(selector);
         movements.push(new Task(factory(selector), tracks[i][0]));
     }
-    var sched = new Scheduler(movements, 500);
+    var sched = new Scheduler(movements, 50);
     sched.start();
     
 }
