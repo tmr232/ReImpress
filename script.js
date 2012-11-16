@@ -55,7 +55,7 @@ function Scheduler(tasks, resolution) {
     
     this.reset = function() {
         this.stop();
-        this.setCurrentTime = 0;
+        this.setCurrentTime(0);
         this.taskIndex = 0;
     };
     
@@ -100,7 +100,7 @@ function init() {
     
     var sched = new Scheduler(tasks, 500);
     
-    document.querySelector("#start").onclick = sched.start.bind(sched);
-    document.querySelector("#stop").onclick = sched.stop.bind(sched);
-    document.querySelector("#reset").onclick = sched.reset.bind(sched);
+    document.querySelector("#start").onclick = function(){sched.start();};
+    document.querySelector("#stop").onclick = function(){sched.stop();};
+    document.querySelector("#reset").onclick = function(){sched.reset();};
 }
