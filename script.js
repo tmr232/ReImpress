@@ -36,6 +36,7 @@ function Scheduler(tasks, resolution) {
     this.resolution = resolution;
     this.interval = null;
     this.currentTime = 0;
+    this.isRunning = true;
     
     this.addTask = function(task) {
         this.tasks.push(task);
@@ -46,11 +47,15 @@ function Scheduler(tasks, resolution) {
         if (this.interval === null) {
         this.interval = setInterval(this.timingEvent, this.resolution);
         }
+        this.running = false;
     };
     
     this.stop = function() {
-        clearInterval(this.interval);
-        this.interval = null;
+        if (this.isRunning) {
+            clearInterval(this.interval);
+            this.interval = null;
+            this.running = false;
+        }
     };
     
     this.reset = function() {
@@ -60,7 +65,16 @@ function Scheduler(tasks, resolution) {
     };
     
     this.setCurrentTime = function(currentTime) {
+        var reRun = this.isRunning;
+        this.stop();
         this.currentTime = currentTime;
+        for (this.taskIndex = 0;
+            (this.taskIndex < this.tasks.length) &&
+                (this.tasks[this.taskIndex].timeout <= this.currentTime);
+            ++this.taskIndex);
+        if (reRun) {
+            this.start();
+        }
     };
     
     this.getCurrentTime = function() {
