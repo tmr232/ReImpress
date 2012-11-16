@@ -136,4 +136,8 @@ function startMoving() {
     
     var sched = new Scheduler(movements, 500);
     sched.start();
+    function temp(ev) {
+        console.log([getTime(), ev.target.id]);
+    }
+    document.addEventListener("impress:goto", temp);
 }

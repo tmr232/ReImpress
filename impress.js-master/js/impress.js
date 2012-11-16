@@ -545,6 +545,9 @@
                 onStepEnter(activeStep);
             }, duration + delay);
             
+            // Trigger the 'impress:goto' event for recording.
+            triggerEvent(el, "impress:goto");
+            
             return el;
         };
         
