@@ -120,10 +120,13 @@ function init() {
 }
 
 
+var tracks = [];
+var baseTime = null;
+var callee = null;
 
 function startMoving() {
     var api = impress();
-    var movements = [
+    /*var movements = [
         new Task(function(){api.next();}, 1000),
         new Task(function(){api.next();}, 2000),
         new Task(function(){api.next();}, 3000),
@@ -135,9 +138,37 @@ function startMoving() {
     ];
     
     var sched = new Scheduler(movements, 500);
-    sched.start();
+    sched.start();*/
     function temp(ev) {
         console.log([getTime(), ev.target.id]);
+        tracks.push([getTime() - baseTime, ev.target.id]);
+        callee = arguments.callee;
     }
+    baseTime = getTime();
     document.addEventListener("impress:goto", temp);
+}
+
+function playNow() {
+    var movements = [];
+    
+    document.removeEventListener("impress:goto", callee, false);
+    
+    var selector;
+    for (var i = 0; i < tracks.length; ++i) {
+        selector = "#" + tracks[i][1];
+        factory = function(selector){
+            function callback() {
+                var api = impress();
+                var el = document.querySelector(selector);
+                console.log(el.id);
+                api.goto(el);
+            }
+            return callback;
+        };
+        console.log(selector);
+        movements.push(new Task(factory(selector), tracks[i][0]));
+    }
+    var sched = new Scheduler(movements, 500);
+    sched.start();
+    
 }
